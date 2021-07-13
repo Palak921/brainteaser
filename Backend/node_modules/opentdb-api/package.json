@@ -1,0 +1,30 @@
+{
+  "name": "opentdb-api",
+  "version": "1.0.0",
+  "description": "Easily retrive random trivia questions using the Open Trivia DB API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blobfysh/opentdb-api.git"
+  },
+  "keywords": [
+    "trivia",
+    "opentriviadb",
+    "quiz",
+    "questions",
+    "promise",
+    "api"
+  ],
+  "author": "blobfysh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blobfysh/opentdb-api/issues"
+  },
+  "homepage": "https://github.com/blobfysh/opentdb-api#readme",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}
