@@ -5,7 +5,7 @@ const router= express.Router()
 router.post('/questions',(req,res)=>{
     try{
       const difficulty=req.body.difficulty;
-      console.log(req.body)  
+      console.log(difficulty)
     opentdb.getToken().then(newToken => {
          let num=0;
         function getRndInteger(min, max) {
