@@ -7,27 +7,27 @@ router.post('/questions', (req, res) => {
     const difficulty = req.body.difficulty;
     console.log(difficulty)
     opentdb.getToken().then(newToken => {
-      let num = 0;
-      function getRndInteger(min, max) {
-        num = Math.floor(Math.random() * (max - min + 1)) + min;
-      }
-      getRndInteger(6000, 6900)
-      console.log(num)
-      var options = {
-        amount: 1,
-        categoryID: num.toString(),
-        difficulty: difficulty,
-        type: 'multiple',
-        token: newToken
-      }
-
-      opentdb.getTrivia(options).then(uniqueTrivia => {
-
-        res.send(uniqueTrivia)
-        console.log('done')
-      });
-      res.status(200)
-    });
+         let num=0;
+        function getRndInteger(min, max) {
+            num= Math.floor(Math.random() * (max - min + 1) ) + min;
+          }
+          getRndInteger(6000,6900)
+     console.log(num)
+        var options = {
+            amount: 1,
+            categoryID: num.toString(),
+           difficulty:difficulty,
+            type: 'multiple',
+            token: newToken
+        }
+       
+        opentdb.getTrivia(options).then(uniqueTrivia => {
+          console.log(uniqueTrivia[0])
+          res.status(200).send({question:uniqueTrivia[0].question,correct:uniqueTrivia[0].correct_answer,incorrect:uniqueTrivia[0].incorrect_answers})
+          console.log('done')
+        });
+      })
+     
 
   }
   catch (error) {
