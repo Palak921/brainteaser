@@ -8,12 +8,14 @@ const AuthModel = require("./AuthUser")
 const DB = "mongodb+srv://quizapp:q43MD5MdJaUQFKX@cluster0.sfd0r.mongodb.net/Gamedeatails"
 
 
-mongoose.connect(DB,{ useUnifiedTopology: true,
+mongoose.connect(DB, {
+    useUnifiedTopology: true,
     useNewUrlParser: true,
-    useCreateIndex: true,}).then(()=>{
-        console.log('Db connected')
-    }).catch(err=>{console.log(err)})
-const app=express()
+    useCreateIndex: true,
+}).then(() => {
+    console.log('Db connected')
+}).catch(err => { console.log(err) })
+const app = express()
 
 app.use(cors())
 
