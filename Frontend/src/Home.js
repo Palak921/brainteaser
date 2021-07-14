@@ -1,5 +1,5 @@
 import React from 'react';
-import Auth from './containers/Auth';
+import Auth from './Containers/Auth';
 import { Card } from '@material-ui/core';
 
 class Home extends React.Component {

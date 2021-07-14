@@ -22,8 +22,8 @@ router.post('/questions',(req,res)=>{
         }
        
         opentdb.getTrivia(options).then(uniqueTrivia => {
-         
-          res.send(uniqueTrivia)
+          console.log(uniqueTrivia[0])
+          res.send({question:uniqueTrivia[0].question,correct:uniqueTrivia[0].correct_answer,incorrect:uniqueTrivia[0].incorrect_answers})
           console.log('done')
         });
         res.status(200)

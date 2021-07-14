@@ -7,12 +7,10 @@ const mongoose=require('mongoose')
 const DB="mongodb+srv://quizapp:q43MD5MdJaUQFKX@cluster0.sfd0r.mongodb.net/Gamedeatails"
 
 
-
-
 mongoose.connect(DB,{ useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,}).then(()=>{
-        console.log('Db connectde')
+        console.log('Db connected')
     }).catch(err=>{console.log(err)})
 const app=express()
 

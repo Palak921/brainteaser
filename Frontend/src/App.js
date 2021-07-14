@@ -1,7 +1,7 @@
 import './App.css';
-import Quizzsatrt from './containers/Quizstart';
+import Quizzsatrt from './Containers/Quizstart';
 import Home from './Home';
-import Quiz from './containers/Quizstart'
+import Quiz from './Containers/Quizstart'
 function App() {
   return (
     <div className="App">
