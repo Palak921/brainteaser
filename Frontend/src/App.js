@@ -2,12 +2,18 @@ import './App.css';
 import Quizzsatrt from './containers/Quizstart';
 import Home from './Home';
 import Quiz from './containers/Quizstart'
+
+import { Route } from 'react-router-dom'
+
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         {/* QuizApp */}
-        <Quiz/>
+        <Route path="/" exact render={() => <Home />} />
+        <Route path="/quiz" exact render={() => <Quiz />} />
+        {/* // <Quiz /> */}
+        {/* <Home /> */}
       </header>
     </div>
   );
