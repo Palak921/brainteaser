@@ -1,11 +1,11 @@
-const express=require('express')
+const express = require('express')
 const opentdb = require('opentdb-api');
 
-const router= express.Router()
-router.post('/questions',(req,res)=>{
-    try{
-      const difficulty=req.body.difficulty;
-      console.log(difficulty)
+const router = express.Router()
+router.post('/questions', (req, res) => {
+  try {
+    const difficulty = req.body.difficulty;
+    console.log(difficulty)
     opentdb.getToken().then(newToken => {
          let num=0;
         function getRndInteger(min, max) {
@@ -23,17 +23,18 @@ router.post('/questions',(req,res)=>{
        
         opentdb.getTrivia(options).then(uniqueTrivia => {
           console.log(uniqueTrivia[0])
-          res.send({question:uniqueTrivia[0].question,correct:uniqueTrivia[0].correct_answer,incorrect:uniqueTrivia[0].incorrect_answers})
+          res.status(200).send({question:uniqueTrivia[0].question,correct:uniqueTrivia[0].correct_answer,incorrect:uniqueTrivia[0].incorrect_answers})
           console.log('done')
         });
-        res.status(200)
-      });
-      
-    }
-    catch(error){
-        console.log(error)
-        res.status(404).send({error})
-    }
- })
+      })
+     
 
- module.exports = router
+  }
+  catch (error) {
+    console.log(error)
+    res.status(404).send({ error })
+  }
+});
+
+
+module.exports = router

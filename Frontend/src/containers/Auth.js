@@ -64,7 +64,7 @@ class Auth extends Component {
     }
 
     submitHandler = (event) => {
-        //     event.preventDefault();
+            event.preventDefault();
         //     this.props.onAuth( this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup );
     }
 
@@ -117,18 +117,18 @@ class Auth extends Component {
             <div className="Auth">
                 <h3>Welcome to our quiz App</h3>
                 <h5>Register yourself or Sign in to proceed!</h5>
-                {authRedirect}
-                {errorMessage}
+                {/* {authRedirect} */}
+                {/* {errorMessage} */}
                 <form onSubmit={this.submitHandler}>
                     {form}
-                    {/* <Button btnType="Success">SUBMIT</Button> */}
+                    <Button color="primary" variant="contained">SUBMIT</Button>
                 </form>
                 <Button
                     variant={this.state.isSignup ? "contained" : "outlined"}
                     color="secondary"
                     onClick={this.switchAuthModeHandler}
                     btnType="Danger"
-                    style={{margin:'2%'}}>SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
+                    style={{ margin: '2%' }}>SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
             </div>
         );
     }
