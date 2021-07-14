@@ -14,7 +14,7 @@ router.post('/questions', (req, res) => {
           getRndInteger(6000,6900)
      console.log(num)
         var options = {
-            amount: 1,
+            amount: 21,
             categoryID: num.toString(),
            difficulty:difficulty,
             type: 'multiple',
@@ -22,8 +22,8 @@ router.post('/questions', (req, res) => {
         }
        
         opentdb.getTrivia(options).then(uniqueTrivia => {
-          console.log(uniqueTrivia[0])
-          res.status(200).send({question:uniqueTrivia[0].question,correct:uniqueTrivia[0].correct_answer,incorrect:uniqueTrivia[0].incorrect_answers})
+          console.log(uniqueTrivia)
+          res.status(200).send({uniqueTrivia/*question:uniqueTrivia[0].question,correct:uniqueTrivia[0].correct_answer,incorrect:uniqueTrivia[0].incorrect_answers*/})
           console.log('done')
         });
       })
