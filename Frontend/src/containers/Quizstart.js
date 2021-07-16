@@ -1,21 +1,20 @@
 import React,{Component} from 'react'
-import Button from '@material-ui/core/Button';
 import Axios from 'axios'
 import qs from 'qs'
 
-
 let num=0;
 let question=null;
+let notrendered=0;
 
-function getRndInteger(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) ) + min;
+let LifeLine=['fifty','skip','know']
+function getRndInteger(max) {
+  return Math.floor(Math.random() * max);
 }
-num=getRndInteger(0,21)
-const level=['easy','medium','hard']
-export default class Quizzstart extends Component{
 
+export default class Quizzstart extends Component{
   state={
     currans:'',
+    currques:null,
     correct:false,
     disable:true,
     easy:[],
@@ -23,7 +22,12 @@ export default class Quizzstart extends Component{
     medium:[],
     gamelevel:'',   //to be stored in mongo
     correctans:0,   //to be stored in mongo
-    mcq:[]          
+    mcq:[],
+    show:0,
+    coins:0,
+    fifty:false,
+    skip:false,
+    know:false      
   }
 
     componentDidMount(){
@@ -35,29 +39,13 @@ export default class Quizzstart extends Component{
       headers: {
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       
-    }}).then(response=>{console.log(response)
-      this.setState({easy:response.data.uniqueTrivia,gamelevel:'easy',
-             currans:response.data.uniqueTrivia[num].correct_answer,
-            mcqs:response.data.uniqueTrivia[num].incorrect_answers.concat(response.data.uniqueTrivia[num].correct_answer)},
-            ()=>{
-              console.log(this.state.mcqs)
-         question=(
-          <div>
-        <p>{this.state.easy[num].question}</p>
-        <br/>
-          {
-            this.state.mcqs.map((opt,i)=>{return(
-              <div>
-              <p key={i}> {opt} </p>
-              
-             </div>
-            )})
-          }
-        </div>
-         )
-         })    
+    }}).then(response=>{
+      num=getRndInteger(21)
+      this.setState({easy:response.data.uniqueTrivia,gamelevel:'easy',currques:response.data.uniqueTrivia[num]},()=>{
+        notrendered=1;
+      })    
+    
     })
-
     //fetching medium level questions
     Axios({method:'post',url:'/api/questions',data: qs.stringify({
       difficulty:'medium'
@@ -65,8 +53,8 @@ export default class Quizzstart extends Component{
     headers: {
       'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
     
-  }}).then(response=>{console.log(response)
-    this.setState({medium:response.data.uniqueTrivia},()=>{console.log(this.state.medium)})    
+  }}).then(response=>{
+    this.setState({medium:response.data.uniqueTrivia})    
   })
 
   //fetching hard level questions
@@ -76,8 +64,8 @@ export default class Quizzstart extends Component{
   headers: {
     'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
   
-}}).then(response=>{console.log(response)
-  this.setState({hard:response.data.uniqueTrivia},()=>{console.log(this.state.hard)})    
+}}).then(response=>{
+  this.setState({hard:response.data.uniqueTrivia})    
 })
 }
 
@@ -85,112 +73,54 @@ export default class Quizzstart extends Component{
 
     render(){
 
+      let corrindex=0;
+
       const getrandindex=(array)=>{                                                 //fucntion to get the correct option at some random index
-        let corrindex=getRndInteger(0,3)
-        [array[3],array[corrindex]]=[array[corrindex],array[3]] 
-        console.log(array)
+      corrindex=getRndInteger(4)
+     
+      let temp=array[3];
+      array[3]=array[corrindex];
+      array[corrindex]=temp;
+       
+        return (array)
       }
 
-        const nextLevel=(event)=>{                                                    //calling for next question
-          event.preventdefault()
-
+        const nextQuestion=()=>{                                                    //calling for next question
+          num=getRndInteger(21)
+          console.log("random Index",num)
         if(this.state.gamelevel=='easy')                                                //current level is easy
           {
            if(this.state.correctans==20){
             this.setState({
               gamelevel:'medium',
               correctans:0,
-              mcqs:this.state.medium[num].incorrect_answers.concat(this.state.medium[num].correct_answer),
-              currans:this.state.medium[num].correct_answer},
-              ()=>{
-              getrandindex(this.state.mcqs)
-              question=(
-                <div>
-              <p>{this.state.medium[num].question}</p>
-              <br/>
-                {
-                  this.state.mcqs.map((opt,i)=>{return(
-                    <div>
-                    <p key={i}> {opt} </p>
-                    
-                   </div>
-                  )})
-                }
-              </div>
-              )
-              })
-          }
-          else{
+              currques:this.state.medium[num],
+              show:1
+             })
+              }
+        else{
+          
             this.setState({
-              currans:this.state.easy[num].correct_answer,
-              mcqs:this.state.easy[num].incorrect_answers.concat(this.state.easy[num].correct_answer)},
-              ()=>{
-                getrandindex(this.state.mcqs)
-                question=(
-                  <div>
-                <p>{this.state.easy[num].question}</p>
-                <br/>
-                {
-                  this.state.mcqs.map((opt,i)=>{return(
-                    <div>
-                    <p key={i}> {opt} </p>
-                   
-                   </div>
-                  )})
-                }
-                </div>
-                )
+              currques:this.state.easy[num],
+              show:1         
               })        
           }
-        }
+          }
 
         else if(this.state.gamelevel=='medium'){                                               //current level is medium
           if(this.state.correctans==20){
+
             this.setState({
               gamelevel:'hard',
               correctans:0,
-              currans:this.state.hard[num].correct_answer,
-              mcqs: this.state.hard[num].incorrect_answers.concat(this.state.hard[num].correct_answer)},
-              ()=>{
-              getrandindex(this.state.mcqs)
-              question=(
-                <div>
-              <p>{this.state.hard[num].question}</p>
-              <br/>
-                {
-                  this.state.mcqs.map((opt,i)=>{return(
-                    <div>
-                    <p key={i}> {opt} </p>
-                    
-                   </div>
-                  )})
-                }
-              </div>
-              )
-            })
+              currques:this.state.hard[num]
+            })          
           }
         else{
             this.setState({
-              currans:this.state.medium[num].correct_answer, 
-              mcqs:this.state.medium[num].incorrect_answers.concat(this.state.medium[num].correct_answer)},
-            ()=>{
-            getrandindex(this.state.mcqs)
-            question=(
-              <div>
-            <p>{this.state.medium[num].question}</p>
-            <br/>
-              {
-                this.state.mcqs.map((opt,i)=>{return(
-                  <div>
-                  <p key={i}> {opt} </p>
-                  
-                 </div>
-                )})
-              }
-            </div>
-            )
-            }
-          )
+              currques:this.state.medium[num],
+              show:1
+           })
         }
       }  
 
@@ -199,42 +129,50 @@ export default class Quizzstart extends Component{
             }
             else{
               this.setState({
-                currans:this.state.hard[num].correct_answer,
-                mcqs:this.state.hard[num].incorrect_answers.concat(this.state.hard[num].correct_answer)},
-                ()=>{
-                  getrandindex(this.state.mcqs)
-                  question=(
-                    <div>
-                  <p>{this.state.hard[num].question}</p>
-                  <br/>
-                    {
-                      this.state.mcqs.map((opt,i)=>{return(
-                        <div>
-                        <p key={i}> {opt} </p>
-                        
-                       </div>
-                      )})
-                    }
-                  </div>
-                  )                 
+                currques:this.state.hard[num],
+                show:1         
             })
           }
         }
-          this.setState({correct:false})              
+             
       }
 
-
-        const checkanswer=(event,ans)=>{                                                 //checkanswer
-          event.preventdefault()
-          if(ans===this.state.currans){
-               this.setState({correctans:this.state.correctans+1,correct:true})
-          }
+        const checkanswer=(ans)=>{                                                 //checkanswer
+          if(ans===this.state.currques.correct_answer){
+              this.setState({correctans:this.state.correctans+1,show:0,currques:null,coins:this.state.coins+1},()=> {
+                notrendered=0
+               nextQuestion()
+          })
+        }
         }
 
-      
-   
+      if(this.state.currques){
+        console.log(this.state.currques,this.state.correctans)
+        const mcq=getrandindex(this.state.currques.incorrect_answers.concat(this.state.currques.correct_answer))
+        question=(                
+            <div>
+              <h5>{this.state.gamelevel}</h5>
+              <p>Coins:{this.state.coins}</p>
+          <p>{this.state.currques.question}</p>
+          <br/>
+            {
+              mcq.map((opt,i)=>{return(
+                <div>
+                <p key={i} onClick={()=>checkanswer(opt)}> {opt} </p>
+                
+               </div>
+              )})
+    }
+         </div>
+        )
+  }
+
+  else{
+    question=<h1>Quiz</h1>
+  }
       return(
         <h1>
+        
           {question}
         </h1>
       )
