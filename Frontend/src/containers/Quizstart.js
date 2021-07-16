@@ -256,9 +256,11 @@ export default class Quizzstart extends Component {
 
     const checkanswer = (event, ans) => {                                                 //checkanswer
       // event.preventdefault();
-      console.log(event)
+      
       if (ans === this.state.currans) {
+        // console.log(ans)
         this.setState({ correctans: this.state.correctans + 1, correct: true , disabled:false })
+        // }
       }
     }
 
