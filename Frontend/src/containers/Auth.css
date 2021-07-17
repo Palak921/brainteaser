@@ -6,9 +6,9 @@
     border: 1px solid #eee;
     /* padding: 0px 10px; */
     box-sizing: border-box;
-    background-color:#774894  ;
+    background-color: #cccabd;
     border-radius: 20%;
-    color: #fff;
+    /* color: #fff; */
 }
 
 @media (min-width: 600px) {
