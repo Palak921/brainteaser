@@ -31,26 +31,15 @@ router.post('/signin',async(req,res)=>{
     }
 
 })
-router.post('/userLevel',async(req,res)=>{
-    const {level,username,password}=req.body
+router.post('/userGameDetails',async(req,res)=>{
+    const {level,ques,score,username,password}=req.body
     try{
-        const user=await UserDetails.findOneAndUpdate({username,password},{level},{new:true,useFindAndModify:false});
+        const user=await UserDetails.findOneAndUpdate({username,password},{level,ques,score},{new:true,useFindAndModify:false});
         res.status(200).send(user)
     }
     catch(error){
         res.send(error).status(404)
     }
 })
-router.post('/userScore',async(req,res)=>{
-    const {score,username,password,ques}=req.body
-    try{
-        const user=await UserDetails.findOneAndUpdate({username,password},{score,ques},{new:true,useFindAndModify:false});
-        res.status(200).send(user)
-    }
-    catch(error){
-        res.send(error).status(404)
-    }
-})
-
 
 module.exports = router
