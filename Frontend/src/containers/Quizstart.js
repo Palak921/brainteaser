@@ -152,7 +152,7 @@ class Quizzstart extends Component{
               this.props.history.push('/Win')                                                //To redirect to win page if all 3 levels are cleared
             }
               this.setState({correctans:this.state.correctans+1,show:0,currques:null,score:this.state.score+1},()=> {
-                Axios({
+            /*    Axios({
                   method: 'post', url: '/api/userdb/userGameDetails', data: qs.stringify({
                      username:username,
                      password:password,
@@ -164,7 +164,7 @@ class Quizzstart extends Component{
                     'content-type': 'application/x-www-form-urlencoded;charset=utf-8'    
                   }}).then(response=>{
                      console.log(response)
-                })
+                })*/
                nextQuestion()
           })
         }
