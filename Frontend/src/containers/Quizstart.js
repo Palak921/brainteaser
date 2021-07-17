@@ -5,6 +5,7 @@ import { CircularProgress } from '@material-ui/core';
 import './Quizstart.css';
 import  {withRouter} from 'react-router-dom'
 import Countdown from 'react-countdown'
+import {connect} from 'react-redux'
 
 let num=0;
 let question=null;
@@ -26,9 +27,6 @@ class Quizzstart extends Component{
     correctans:0,                                                 //to be stored in mongo
     show:0,
     score:0,
-    fifty:false,
-    skip:false,
-    know:false,
     spinner: true, 
   }
 
@@ -71,6 +69,18 @@ class Quizzstart extends Component{
      }}).then(response=>{
             this.setState({hard:response.data.uniqueTrivia},()=>{this.setState({ spinner: false })})    
       })
+
+
+      Axios({
+        method: 'post', url: '/api/userdb/fetchUserDetails', data: qs.stringify({
+           username:this.props.username,
+           password:this.props.password,
+        }),
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'    
+        }}).then(response=>{this.setState({score:response.data.score,correctans:response.data.ques,gamelevel:response.data.level})
+      })
+   
     }
            
   render() {
@@ -152,10 +162,10 @@ class Quizzstart extends Component{
               this.props.history.push('/Win')                                                //To redirect to win page if all 3 levels are cleared
             }
               this.setState({correctans:this.state.correctans+1,show:0,currques:null,score:this.state.score+1},()=> {
-            /*    Axios({
+             Axios({
                   method: 'post', url: '/api/userdb/userGameDetails', data: qs.stringify({
-                     username:username,
-                     password:password,
+                     username:this.props.username,
+                     password:this.props.password,
                      score:this.state.score,
                      level:this.state.gamelevel,
                      ques:this.state.correctans
@@ -164,16 +174,29 @@ class Quizzstart extends Component{
                     'content-type': 'application/x-www-form-urlencoded;charset=utf-8'    
                   }}).then(response=>{
                      console.log(response)
-                })*/
+                })
                nextQuestion()
           })
         }
         else{
+          Axios({
+            method: 'post', url: '/api/userdb/userGameDetails', data: qs.stringify({
+               username:this.props.username,
+               password:this.props.password,
+               score:0,
+               level:'easy',
+               ques:0
+            }),
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded;charset=utf-8'    
+            }}).then(response=>{
+               console.log(response)
+          })
           this.props.history.push('/lost')                                                          //to redirect to lost page in case the selected answer is wrong
           console.log(this.props)    
         }
         }
-
+        
         let mcqdiv1 = null                                                                         
         let mcqdiv2 = null
 
@@ -253,4 +276,13 @@ else{
       }
     }
     }
-    export default withRouter(Quizzstart)
+
+   
+    const mapStateToProps = state => {
+      return {
+         username:state.username,
+         password:state.password,
+         signup:state.signup
+      };
+  };
+    export default withRouter(connect(mapStateToProps)(Quizzstart))

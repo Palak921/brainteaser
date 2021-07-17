@@ -1,7 +1,10 @@
 
-const onAuth = () => {
+const onAuth = (username,password,signup) => {
     return {
-        type: 'ON_AUTH'
+        type: 'ON_AUTH',
+        username:username,
+        password:password,
+        signup:signup
     }
 }
 
@@ -10,6 +13,7 @@ const onAuth = () => {
         type: 'ON_SET_AUTH_DIRECT_PATH'
     }
 }
+
 
 export{
     onAuth,

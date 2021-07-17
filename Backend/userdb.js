@@ -4,7 +4,7 @@ const UserDetails=require('./userDetails')
 
 router.post('/signup',(req,res)=>{
     const {username,password}=req.body
-    const newuser = new UserDetails({username,password });
+    const newuser = new UserDetails({username,password,score:0,level:'easy',ques:0 });
      newuser.save((err)=>{
          if(err){
              res.status(404).send({err})
@@ -42,4 +42,15 @@ router.post('/userGameDetails',async(req,res)=>{
     }
 })
 
+
+router.post('/fetchUserDetails',async(req,res)=>{
+    const {username,password}=req.body
+    try{
+        const user=await UserDetails.findOne({username,password});
+        res.status(200).send(user)
+    }
+    catch(error){
+        res.send(error).status(404)
+    }
+    })
 module.exports = router

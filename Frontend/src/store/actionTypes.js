@@ -1,0 +1,2 @@
+export const  ON_AUTH='ON_AUTH'
+export const ON_SET_AUTH_DIRECT_PATH='ON_SET_AUTH_DIRECT_PATH'

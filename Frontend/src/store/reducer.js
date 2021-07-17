@@ -1,21 +1,28 @@
-import * as actions from './actions';
+import * as actiontypes from './actionTypes'
 
 const initialState = {
-    userName: '',
+    username: '',
     password: '',
     path: '',
-    isAuthenticated: true
+    signup:false
 }
 
-const reducer = (state = initialState, actions) => {
-    switch (actions.type) {
-        case 'ON_AUTH': {
-
-        }
-        case 'ON_SET_AUTH_DIRECT_PATH': {
-            return { ...initialState, path: '/' }
-        }
-
+const reducer = (state = initialState, action) => {
+    switch (action.type) {
+        case actiontypes.ON_AUTH: 
+        return{
+            ...initialState,
+             username:action.username,
+             password:action.password,
+             signup:action.signup
+           }          
+           
+        case 'ON_SET_AUTH_DIRECT_PATH': 
+        return{
+             ...initialState, 
+             path: '/' 
+            }
+        
         default: return state;
     }
 }
