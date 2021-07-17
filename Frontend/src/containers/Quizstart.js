@@ -85,11 +85,29 @@ class Quizzstart extends Component{
            
   render() {
       let corrindex=0;
+
+      const resetData=()=>{
+        Axios({
+          method: 'post', url: '/api/userdb/userGameDetails', data: qs.stringify({
+             username:this.props.username,
+             password:this.props.password,
+             score:0,
+             level:'easy',
+             ques:0
+          }),
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'    
+          }}).then(response=>{
+             console.log(response)
+        })
+      }
     
       const startTimer=(t) =>{                                                    //to start a Timer everytime a new question is loaded on the screen
-        this.timer = setInterval(() => 
-        this.props.history.push('/timeout'),t);
-        console.log(this.timer)
+        this.timer = setInterval(() => {
+        resetData()                                           //reset mongo data if user runs out of time
+        this.props.history.push('/timeout');
+        },t)
+        
       }
       
       const stopTimer=()=> {                                                      //stop the timer if user has clicked an option  
@@ -179,24 +197,12 @@ class Quizzstart extends Component{
           })
         }
         else{
-          Axios({
-            method: 'post', url: '/api/userdb/userGameDetails', data: qs.stringify({
-               username:this.props.username,
-               password:this.props.password,
-               score:0,
-               level:'easy',
-               ques:0
-            }),
-            headers: {
-              'content-type': 'application/x-www-form-urlencoded;charset=utf-8'    
-            }}).then(response=>{
-               console.log(response)
-          })
+           resetData();                                      //Reset mongo data if user loses
           this.props.history.push('/lost')                                                          //to redirect to lost page in case the selected answer is wrong
           console.log(this.props)    
         }
         }
-        
+
         let mcqdiv1 = null                                                                         
         let mcqdiv2 = null
 
@@ -277,7 +283,6 @@ else{
     }
     }
 
-   
     const mapStateToProps = state => {
       return {
          username:state.username,
