@@ -6,7 +6,7 @@ export default function YouLost() {
         <div className="Lost">
            
             <h1 className="lostHeading">Oops!   Time Out</h1>
-            <h1 className="lostHeading">You Lost</h1>
+            {/* <h1 className="lostHeading2">You Lost</h1> */}
             <h2 className="lostHeading2">Better Luck Next Time</h2>
             <div class="SadImage">
                 <img src={Sad} />

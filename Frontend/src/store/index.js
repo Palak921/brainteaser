@@ -1,4 +1,5 @@
 export{
 onAuth,
-onSetAuthRedirectPath
+onSetAuthRedirectPath,
+onAuthenticated
 }from './actions'

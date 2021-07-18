@@ -14,8 +14,14 @@ const onAuth = (username,password,signup) => {
     }
 }
 
+const onAuthenticated = () =>{
+    return{
+        type:'ON_AUTHENTICATED'
+    }
+}
 
 export{
     onAuth,
-    onSetAuthRedirectPath
+    onSetAuthRedirectPath,
+    onAuthenticated
 }
