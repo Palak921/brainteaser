@@ -6,7 +6,6 @@ import './Quizstart.css';
 import { withRouter } from 'react-router-dom'
 import Countdown from 'react-countdown'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 
 let num = 0;
 let question = null;
@@ -89,47 +88,27 @@ class Quizzstart extends Component {
       })
    
     }
-           
-  render() {
-      let corrindex=0;
-
-      const resetData=()=>{
-        Axios({
-          method: 'post', url: '/api/userdb/userGameDetails', data: qs.stringify({
-             username:this.props.username,
-             password:this.props.password,
-             score:0,
-             level:'easy',
-             ques:0
-          }),
-          headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'    
-          }}).then(response=>{
-             console.log(response)
-        })
-      }
-    
-      const startTimer=(t) =>{                                                    //to start a Timer everytime a new question is loaded on the screen
-        this.timer = setInterval(() => {
-        resetData()                                           //reset mongo data if user runs out of time
-        this.props.history.push('/timeout');
-        },t)
         
-      }
-      
-      const stopTimer=()=> {                                                      //stop the timer if user has clicked an option  
-        clearInterval(this.timer)
-        console.log(this.timer)
-      }
-    }).then(response => {
-      this.setState({ score: response.data.score, correctans: response.data.ques, gamelevel: response.data.level })
-    })
-
-  }
+  
 
   render() {
-    console.log(this.props.isAuthenticated)
+ 
     let corrindex = 0;
+    const resetData=()=>{
+      Axios({
+        method: 'post', url: '/api/userdb/userGameDetails', data: qs.stringify({
+           username:this.props.username,
+           password:this.props.password,
+           score:0,
+           level:'easy',
+           ques:0
+        }),
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'    
+        }}).then(response=>{
+           console.log(response)
+      })
+    }
 
     const startTimer = (t) => {                                                    //to start a Timer everytime a new question is loaded on the screen
       this.timer = setInterval(() =>
@@ -187,14 +166,17 @@ class Quizzstart extends Component {
       }
 
       else {
-        if (this.state.correctans == 20) {
+        if (this.state.correctans < 20) {
           this.setState({
             gamelevel: 'hard',
             correctans: 0,
             currques: this.state.hard[num]
           }, () => startTimer(30000))
         }
-<<<<<<< HEAD
+        else{
+          resetData();
+          this.props.history.push('/Win')
+        }
       }
       this.setState({ correct: false })
     }
@@ -202,9 +184,7 @@ class Quizzstart extends Component {
     const checkanswer = (ans) => {
       stopTimer()                                                                        //to check if the selected anwer is correct
       if (ans === this.state.currques.correct_answer) {
-        if (this.state.gamelevel == 'hard' && this.state.correctans == 20) {
-          this.props.history.push('/Win')                                                //To redirect to win page if all 3 levels are cleared
-        }
+        
         this.setState({ correctans: this.state.correctans + 1, show: 0, currques: null, score: this.state.score + 1 }, () => {
           Axios({
             method: 'post', url: '/api/userdb/userGameDetails', data: qs.stringify({
@@ -221,7 +201,8 @@ class Quizzstart extends Component {
             console.log(response)
           })
           nextQuestion()
-=======
+        })
+      }
         else{
            resetData();                                      //Reset mongo data if user loses
           this.props.history.push('/lost')                                                          //to redirect to lost page in case the selected answer is wrong
@@ -232,46 +213,9 @@ class Quizzstart extends Component {
         let mcqdiv1 = null                                                                         
         let mcqdiv2 = null
 
-      if(this.state.currques){
-        console.log(this.state.currques,this.state.correctans)
-        const mcq=getrandindex(this.state.currques.incorrect_answers.concat(this.state.currques.correct_answer))
-        
-        mcqdiv1 = mcq.map((ans, i) => {
-          if (i == 0 || i == 1) {
-            return (
-              <div class="option" onClick={() => checkanswer(ans)}>
-                <p key={i} >
-                  {ans}
-                </p>
-              </div>)
-          } else {
-            return null
-          }
->>>>>>> 958cbcd70f383ea1de32b3b365056a3ea405172a
-        })
-      }
-      else {
-        Axios({
-          method: 'post', url: '/api/userdb/userGameDetails', data: qs.stringify({
-            username: this.props.username,
-            password: this.props.password,
-            score: 0,
-            level: 'easy',
-            ques: 0
-          }),
-          headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-          }
-        }).then(response => {
-          console.log(response)
-        })
-        this.props.history.push('/lost')                                                          //to redirect to lost page in case the selected answer is wrong
-        console.log(this.props)
-      }
-    }
+     
 
-    let mcqdiv1 = null
-    let mcqdiv2 = null
+   
 
     if (this.state.currques) {
       console.log(this.state.currques, this.state.correctans)
@@ -353,21 +297,12 @@ class Quizzstart extends Component {
 }
 
 
-<<<<<<< HEAD
 const mapStateToProps = state => {
   return {
     username: state.username,
     password: state.password,
     signup: state.signup,
     isAuthenticated: state.isAuthenticated
-=======
-    const mapStateToProps = state => {
-      return {
-         username:state.username,
-         password:state.password,
-         signup:state.signup
-      };
->>>>>>> 958cbcd70f383ea1de32b3b365056a3ea405172a
   };
 };
 export default withRouter(connect(mapStateToProps)(Quizzstart))
