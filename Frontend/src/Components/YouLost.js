@@ -16,8 +16,8 @@ export default function YouLost() {
             <Button variant="contained" color="primary" style={{ margin: '2%' }}>
                 <Link to="/" style={{ color: 'white', textDecoration: ' none' }}>Exit</Link>
             </Button>
-            <div class="SadImage">
-                <img src={Sad} />
+            <div className="SadImage">
+                <img src={Sad} alt="Sad" />
             </div>
         </div>
     )

@@ -9,7 +9,7 @@ export default function YouLost() {
             {/* <h1 className="lostHeading2">You Lost</h1> */}
             <h2 className="lostHeading2">Better Luck Next Time</h2>
             <div class="SadImage">
-                <img src={Sad} />
+                <img src={Sad} alt="imageSad"/>
             </div>
         </div>
     )

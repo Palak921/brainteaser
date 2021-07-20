@@ -103,7 +103,6 @@ class Auth extends Component {
 
 
 
-            let authRedirect = null;
             if (this.props.isAuthenticated) {
                 // authRedirect = <Redirect to={this.props.authRedirectPath} />
             }
@@ -113,7 +112,7 @@ class Auth extends Component {
             }
 
 
-
+           
             const signInHandler = (event) => {
                 event.preventDefault();
                 submitHandler();
@@ -129,7 +128,7 @@ class Auth extends Component {
 
                     }
                     else {
-                        this.setState({ submit: true })
+                        this.setState({ submit: true,error:false })
                         this.props.onAuthenticated(true)
 
                     }
@@ -138,14 +137,24 @@ class Auth extends Component {
 
             const signUpHandler = (event) => {
                 event.preventDefault();
-                submitHandler();
-                this.setState({ submit: true })
+                
+                
                 Axios({
                     method: 'post', url: '/api/userdb/signUp', data: qs.stringify({
                         username: this.state.controls.email.value,
                         password: this.state.controls.password.value
                     })
                 }).then(response => {
+                    
+                    if(response.data==='Already Exists'){
+                        console.log(response)
+                        this.setState({error:true})
+                    }
+                    else{
+                        submitHandler();
+                        this.setState({submit:true,error:false})
+                        this.props.onAuthenticated(true)
+                    }
                     console.log(response)
                 }
                 )
@@ -161,7 +170,10 @@ class Auth extends Component {
                     <h3>Welcome to our quiz App</h3>
                     <h5>Register yourself or Sign in to proceed!</h5>
                     {this.state.submit ? <Redirect to="/quiz" /> : null}
-                    {this.state.error && !this.state.isSignup ? <p>Incorrect Credentials, try Again or Sign Up</p> : null}
+                    {this.state.error && !this.state.isSignup ?<p>Incorrect Credentials, try Again or Sign Up</p> : null}
+                    {this.state.error && this.state.isSignup ?<p>Username already exists</p> : null}
+
+
                     <form>
                         {form}
                         {button}

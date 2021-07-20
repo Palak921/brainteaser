@@ -19,7 +19,7 @@ export default function YouWin() {
             <h1 class="winHeading">Wohoo! You mastered this game</h1>
             {/* <h2 style={{ color: 'black' }}>Better Luck Next Time</h2> */}
             <div class="SadImage">
-                <img class="winImage" src={Win} />
+                <img class="winImage" src={Win} alt="Sad"/>
             </div>
             <Button variant="contained" color="primary" style={{ margin: '5%' }} onClick={newGameHandler}>New Game</Button>
             {redirect}

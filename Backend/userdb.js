@@ -2,8 +2,13 @@ const express = require('express')
 const router = express.Router()
 const UserDetails=require('./userDetails')
 
-router.post('/signup',(req,res)=>{
+router.post('/signup',async(req,res)=>{
     const {username,password}=req.body
+    const olduser=await UserDetails.findOne({username,password});
+    if(olduser){
+        res.send('Already Exists')
+    }
+    else{
     const newuser = new UserDetails({username,password,score:0,level:'easy',ques:0 });
      newuser.save((err)=>{
          if(err){
@@ -13,6 +18,7 @@ router.post('/signup',(req,res)=>{
              res.status(200).send(newuser)
          }
      })
+    }
 })
 
 router.post('/signin',async(req,res)=>{
