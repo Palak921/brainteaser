@@ -1,4 +1,4 @@
-.headings{
+.headings {
     color: #2c3824;
 }
 
@@ -9,13 +9,16 @@
     font-weight: 100;
     border: #6f7c67 solid 4px;
     border-radius: 17px;
-    min-width: 500px;
+    /* min-width: 500px; */
+    margin: 1%;
+    width: 85%;
 }
 
 .options {
     display: flex;
     flex-direction: column;
     /* margin: 0% 23% 0% 23%; */
+    width: 90%;
 }
 
 .option {
@@ -38,9 +41,33 @@
     border-radius: 30px;
     border: #6f7c67 solid 3px;
     background-color: #cac5a0;
-    color:#fff;
+    color: #fff;
     font-weight: 0px;
     width: 45%;
     cursor: pointer;
     box-shadow: 10px 10px 5px grey;
+}
+
+.countdown {
+    height: fit-content;
+    width: fit-content;
+    border-radius: 20px 0px 20px 8px;
+    border: #2c3824 solid 3px;
+    background-color: #f1ede8;
+    justify-content: center;
+    padding: 0px 10px;
+}
+
+
+@media (min-width:700px ) and( max-width:300px) {
+    .question {
+        padding: 0% 5% 0% 5%;
+        background-color: #f0c893;
+        color: #2c3824;
+        font-weight: 100;
+        border: #6f7c67 solid 4px;
+        border-radius: 17px;
+
+        min-width:80%;
+    }
 }
