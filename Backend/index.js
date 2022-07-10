@@ -5,7 +5,7 @@ const questions = require('./questions')
 const mongoose = require('mongoose')
 const userdb=require("./userdb")
 
-const DB = "mongodb+srv://quizapp:q43MD5MdJaUQFKX@cluster0.sfd0r.mongodb.net/Gamedeatails"
+const DB = "mongodb+srv://palak:Test123@cluster0.xieg8.mongodb.net/?retryWrites=true&w=majority"
 
 mongoose.connect(DB, {
     useUnifiedTopology: true,
